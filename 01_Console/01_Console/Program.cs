@@ -37,7 +37,7 @@ namespace _01_Console
             //While (!(result == "Yes" \\ result == "yes" \\ result == "Y" \\ result == "y"));
             while (result != "Yes" && result != "yes" && result != "Y" && result != "y");
 
-            Orc enemy = new Orc("가로쉬:);
+            Orc enemy = new Orc("가로쉬:");
 
 
             Console.ReadKey();  //키 입력 대기하는 코드
