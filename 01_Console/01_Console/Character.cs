@@ -24,6 +24,8 @@ namespace _01_Console
         private int dexterity = 5;
         private int intellegence = 7;
 
+        protected Random rand;
+
         //Rondom random = new Random();
         //for (int i = 0; i<100; i++)
         //{
@@ -33,15 +35,16 @@ namespace _01_Console
         //  // % 연산의 결과는 항상 0~(뒤 숫자-1)로 나온다.
         //  Console.WriteLine($"랜덤 넘버 : {randNum}");
         //}
+        private string[] nameArray = { "너굴맨", "개굴맨", "슈퍼맨", "아이언맨", "맨투맨" };    //nammeArray 에 기본값 설정(선언과 할당을 동시에)
 
         //배열 : 같은 종류(데이터 타입)의 데이터를 한번에 여러개 가지는 유형의 변수
         //int[] intArray;   // 인티저를 여러개 가질 수 있는 배열
         //intArray = new int[5];    //인티저를 5개 가질 수 있도록 할당
 
-        string[] nameArray = { "너굴맨", "개굴맨", "슈퍼맨", "아이언맨", "맨투맨" };
 
-        Random rand;
-
+        //<summary>
+        //HP 표시/설정용 프로퍼티
+        //<summary>
         public int HP
         {
             get //이 프로퍼티를 읽을 때 호출되는 부분. get만 만들면 읽기 전용같은 효과가 있다.
@@ -53,9 +56,9 @@ namespace _01_Console
             {
 
                 hp = value;
-                if (hp > maxHP)
+                if (hp > maxHP) //hp에 값이 들어갈 때 최대치가 넘으면 최대치로 설정
                 {
-                    hp = maxHP;
+                    hp = maxHP; //hp
                 }
                 if (hp <= 0)
                 {
@@ -65,45 +68,43 @@ namespace _01_Console
             }
         }
 
+        /// <summary>
+        /// 기본 생성자
+        /// </summary>
         public Character()
         {
             Console.WriteLine("생성자 호출");
             //Console.WriteLine("생성자 호출");
-            rand = new Random();
-            int randomNumber = rand.Next(); //랜덤 클래스 이용해서 0~21억 사이의 숫자를 랜덤으로 선택
+            rand = new Random(DateTime.Now.Millisecond);    //랜덤 클레스 시드값 설정.
+            int randomNumber = rand.Next();                 //랜덤 클래스 이용해서 0~21억 사이의 숫자를 랜덤으로 선택
             randomNumber %= 5; // randomNumber = randomNumber % 5  //랜덤으로 고른 숫자를 0~4로 변경
-            name = nameArray[randomNumber]; // 0~4로 변경한 값을 인덱스로 사용하여 이름 배열에서 이름 선택
+            name = nameArray[randomNumber];                 // 0~4로 변경한 값을 인덱스로 사용하여 이름 배열에서 이름 선택
 
-            maxHP = rand.Next(100, 201);    //100에서 200 중에 랜덤으로 선택
-            hp = maxHP;
-
-            strenth = rand.Next(20) + 1;    //1~20 사이를 랜덤하게 선택
-            dexterity = rand.Next(20) + 1;
-            intellegence = rand.Next(20) + 1;
-
-            GenerateStatus();
-            TestPrintStatus();
-            //실습
-            //1. 이름이 nameArray에 들어가는 것 중 하나로 랜덤하게 선택된다.
-            //2. maxHP는 100~200 사이로 랜덤하게 선택된다.
-            //3. HP는 maxHP와 같은 값이다.
-            //4. strenth, dexterity, intellegence은 1~20사이로 랜덤하게 정해진다.
-            //5. TestPrintStatus 함수를 이용해서 최종 상태를 출력한다.
-            //시간
+            GenerateStatus();   //스테이터스 랜덤으로 설정
+            PrintStaus();  //설정한 내용 출력하기
+           
         }
 
+        /// <summary>
+        /// 생성자
+        /// </summary>
+        /// <param name="newName">Character의 이름</param>
         public Character(string newName)
         {
             //Console.WriteLine($"생성자 호출 - {newName}");
-            rand = new Random();
-            Console.WriteLine($"생성자 호출 - {newName}");
-            name = newName;
+            rand = new Random(DateTime.Now.Millisecond);
+            name = newName; //이름은 파라메터로 입력 받은 것을 사용.
 
-            GenerateStatus();
-            TestPrintStatus();
+            GenerateStatus();   //스테이터스 랜덤으로 설정
+            PrintStaus();  //설정한 내용 출력하기
         }
 
-        private void GenerateStatus()
+        //멤버 함수 >> 이 클래스가 가지는 기능
+
+        /// <summary>
+        /// 스테이더스를 랜덤으로 설정해주는 함수
+        /// </summary>
+        private virtual void GenerateStatus()
         {
             maxHP = rand.Next(100, 201);    //100에서 200 중 랜덤으로 선택
             hp = maxHP;
@@ -113,27 +114,32 @@ namespace _01_Console
             intellegence = rand.Next(20) + 1;
         }
 
-        //public void SetName(string newName)
-        //{
-        //  name = newName;
-        //}
 
-        //멤버 함수 >> 이 클래스가 가지는 기능
-
-        public void Attack(Character target)
+        /// <summary>
+        /// target을 공격하는 함수
+        /// </summary>
+        /// <param name="target">공격대상</param>
+        public virtual void Attack(Character target)
         {
-            int damage = strenth;
+            int damage = strenth;   //데미지는 힘 기반
             Console.WriteLine($"{name}이 {target.name}에게 공격을 합니다.(공격력 : {damage})");
-            target.TakeDamage(damage);
+            target.TakeDamage(damage);  //target에게 데미지 전달
         }
 
-        public void TakeDamage(int damage)
+        /// <summary>
+        /// 데미지를 받는 함수
+        /// </summary>
+        /// <param name="damage">받은 순수 데미지</param>
+        public virtual void TakeDamage(int damage)
         {
-            HP -= damage;
+            HP -= damage;   //데미지 만큰 HP감소, 추가 로직 없음.
             Console.WriteLine($"{name}이 {damage}만큼의 피해를 입었습니다.");
         }
 
-        public void TestPrintStatus()
+        /// <summary>
+        /// 스테이터스창 출력
+        /// </summary>
+        public virtual void PrintStaus()
         {
             Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
             Console.WriteLine($"┃ 이름\t:\t{name}");

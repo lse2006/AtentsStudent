@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks;n
 using System.Xml.Linq;
 
 namespace _01_Console
@@ -68,15 +68,15 @@ namespace _01_Console
                 }
 
                 player.Attack(enemy);
-                player.TestPrintStatus();
+                player.PrintStaus();
                 if (enemy.IsDead)
                 {
                     Console.WriteLine("승리!");
                     break;
                 }
                 enemy.Attack(enemy);
-                player.TestPrintStatus();
-                enemy.TestPrintStatus();
+                player.PrintStaus();
+                enemy.PrintStaus();
                 if (player.IsDead)
                 {
                     Console.WriteLine("패배...");
@@ -110,15 +110,15 @@ namespace _01_Console
             {
                 human1.Attack(human2);
                 human2.Attack(human1);
-                human2.TestPrintStatus();
+                human2.PrintStaus();
                 if (human2.IsDead)  // human2가 죽으면 공격을 안함
                 {
                     break;
                 }
 
                 human2.Attack(human1);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
+                human1.PrintStaus();
+                human2.PrintStaus();
 
             }
         }
@@ -133,16 +133,16 @@ namespace _01_Console
             while (!human1.IsDead && !human2.Dead) // human1이 살아있고 human2도 살아있다.
             {
                 human1.Attack(human2);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
+                human1.PrintStaus();
+                human2.PrintStaus();
                 if (human2.IsDead)   // human2가 죽으면 공격을 안함
                 {
                     break;
                 }
 
                 human2.Attack(human1);
-                human1.TestPrintStatus();
-                human2.TestPrintStatus();
+                human1.PrintStaus();
+                human2.PrintStaus();
             }
 
             // 실습 : 26번 라인~31번 라인까지를 한쪽이 죽을 때까지 반복하기
